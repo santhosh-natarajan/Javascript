@@ -7,6 +7,28 @@
  */
 
 /** Logics section start */
+class Organization {
+    #name = "";
+    #addressLine1 = "";
+    #addressLine2 = "";
+    #city = "";
+    #pincode = 0;
+    #gstNumber = "";
+
+    createOrganization(name, addressLine1, addressLine2, city, pincode, gstNumber) {
+        this.#name = name;
+        this.#addressLine1 = addressLine1;
+        this.#addressLine2 = addressLine2;
+        this.#city = city;
+        this.#pincode = pincode;
+        this.#gstNumber = gstNumber;
+    }
+
+    printOraganizationDetails() {
+        return `***************${this.name}***************\n${this.addressLine1}\n${this.addressLine2}\n${this.city} - ${this.pincode}\nGST: ${this.gstNumber}`
+        
+    }
+}
 class Product {
     name = "";
     price = "";
@@ -37,14 +59,47 @@ class Customer {
 
 }
 
+class Taxes {
+    taxable = 0;
+    typeOfProduct = ""
+
+    setTaxable(taxable) {
+        return this.taxable = taxable;
+    }
+
+    getTaxable() {
+        return this.taxable;
+    }
+}
+
+class SGST extends Taxes {
+    #SGSTAmount = 0;
+
+    #calculateSGST() {
+        return this.#SGSTAmount = ((this.taxable * 5) / 100);
+    }
+
+    getCalculatedSGST() {
+        console.log(`Taxable amount from SGST: ${this.#calculateSGST()}`)
+    }
+}
+
+class CGST extends Taxes {
+    getCalculatedSGST() {
+        console.log(`Taxable amount from CGST: ${this.taxable}`)
+    }
+}
+
 
 class Bill {
     billNumber = "";
     billAmount = 0;
     discoutAmount = 0;
     amountToPay = 0;
+    orgDetails = ""
 
-    constructor(billNumber, customer) {
+    constructor(orgDetails, billNumber, customer) {
+        this.orgDetails = orgDetails;
         this.billNumber = billNumber;
         this.customer = customer
     }
@@ -77,8 +132,9 @@ class Bill {
     }
 
     generateBill() {
-        console.log("**********************ABC HYPHER MARKER*************************");
+        console.log(this.orgDetails);
         console.log(`Bill number: ${this.billNumber}`);
+        console.log("********************************************")
         console.log(`Hello ${this.customer.name}, Please check your bill`);
         for (let i = 0; i < this.customer.products.length; i++) {
             console.log("____________________________________________________")
@@ -93,10 +149,14 @@ class Bill {
 
 }
 
+
+
 /** Logic section ends */
 
 /*** Billing section start*/
-
+const store = new Organization();
+store.createOrganization("ABCD HYPERMARKET", "21, TVS Avenue", "North coimbatore", "Coimbatore", 641035, "29GGGGG1314R9Z6");
+const storeDetails = store.printOraganizationDetails();
 const apple = new Product("Apple", 200, 100);
 const orange = new Product("Orange", 150, 100);
 const graphes = new Product("Graphes", 100, 1000);
@@ -104,7 +164,10 @@ const customer = new Customer("Sherin");
 customer.buyProducts(apple, 1);
 customer.buyProducts(graphes, 2);
 customer.buyProducts(orange, 20);
-const bill = new Bill("1000", customer)
+const bill = new Bill(storeDetails, "1000", customer)
+// const sgst = new SGST();
+// sgst.setTaxable(1000)
+// sgst.getCalculatedSGST();
 bill.generateBill();
 
 /*** Billing section ends*/
