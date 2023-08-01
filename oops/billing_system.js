@@ -14,34 +14,72 @@ class Organization {
     #city = "";
     #pincode = 0;
     #gstNumber = "";
+    #phoneNumber = "";
+    #emailId = "";
 
-    createOrganization(name, addressLine1, addressLine2, city, pincode, gstNumber) {
+    createOrganization(name, addressLine1, addressLine2, city, pincode, gstNumber, phonenumber, emailId) {
         this.#name = name;
         this.#addressLine1 = addressLine1;
         this.#addressLine2 = addressLine2;
         this.#city = city;
         this.#pincode = pincode;
         this.#gstNumber = gstNumber;
+        this.#phoneNumber = phonenumber;
+        this.#emailId = emailId
     }
 
     printOraganizationDetails() {
-        return `***************${this.name}***************\n${this.addressLine1}\n${this.addressLine2}\n${this.city} - ${this.pincode}\nGST: ${this.gstNumber}`
-        
+        return `***************${this.#name}***************\n${this.#addressLine1}\n${this.#addressLine2}\n${this.#city} - ${this.#pincode}\n${this.#phoneNumber}\n${this.#emailId}\nGST: ${this.#gstNumber}`
+
     }
 }
 class Product {
-    name = "";
-    price = "";
+    #name = "";
+    #type = "";
+    #price = "";
+    #sgst = 0;
+    #cgst = 0;
+    #discount = 0;
+    #mrp = 0;
     quantity = 0;
 
-    constructor(name, price, quantity) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity
+    createProduct(productName, productType, productPrice) {
+        this.#name = productName;
+        this.#type = productType;
+        this.#price = productPrice;
+        return {
+            name: this.#name,
+            type: this.#type,
+            price: this.#price,
+            sgst: this.#calculateSGST(),
+            cgst: this.#calculateCGST(),
+            mrp: this.#calculateMRP()
+        }
+    }
+
+    #calculateSGST() {
+        /** use sgst class */
+        const sgst = new SGST();
+        sgst.setTypeProduct(this.#type);
+        sgst.setTaxable(this.#price);
+        this.#sgst = sgst.getCalculatedSGST();
+        return this.#sgst;
+    }
+
+    #calculateCGST() {
+        /** use cgst class */
+        const cgst = new CGST();
+        cgst.setTypeProduct(this.#type);
+        cgst.setTaxable(this.#price);
+        this.#cgst = cgst.getCalculatedCGST();
+        return this.#cgst;
+    }
+
+    #calculateMRP() {
+        return this.#mrp = (this.#price + this.#calculateSGST() + this.#calculateCGST()) - this.#discount;
     }
 
 }
-
 
 class Customer {
     name = "";
@@ -52,41 +90,77 @@ class Customer {
     }
 
     buyProducts(product, purchasedQuantity) {
-        if (product.quantity > 0) {
-            this.products.push(Object.assign({}, product, { purchasedQuantity }))
-        }
+        this.products.push(Object.assign({}, product, { purchasedQuantity }))
     }
 
 }
 
 class Taxes {
-    taxable = 0;
-    typeOfProduct = ""
+    #taxable = 0;
+    #typeOfProduct = ""
 
     setTaxable(taxable) {
-        return this.taxable = taxable;
+        this.#taxable = taxable;
     }
 
     getTaxable() {
-        return this.taxable;
+        return this.#taxable;
+    }
+
+    setTypeProduct(productType) {
+        this.#typeOfProduct = productType;
+    }
+
+    getTypeOfProudct() {
+        return this.#typeOfProduct;
     }
 }
 
 class SGST extends Taxes {
     #SGSTAmount = 0;
+    #typeATaxPerc = 2.50;
+    #typeBTaxPerc = 6;
+    #typeCTaxPerc = 9;
 
-    #calculateSGST() {
-        return this.#SGSTAmount = ((this.taxable * 5) / 100);
+
+    #calculatedSGST() {
+        if (this.getTypeOfProudct() === 'A') {
+            return this.#SGSTAmount = ((this.getTaxable()) * this.#typeATaxPerc) / 100;
+        } else if (this.getTypeOfProudct() === 'B') {
+            return this.#SGSTAmount = ((this.getTaxable()) * this.#typeBTaxPerc) / 100;
+        } else if (this.getTypeOfProudct() === 'C') {
+            return this.#SGSTAmount = ((this.getTaxable()) * this.#typeCTaxPerc) / 100;
+        } else {
+            return this.#SGSTAmount;
+        }
     }
 
     getCalculatedSGST() {
-        console.log(`Taxable amount from SGST: ${this.#calculateSGST()}`)
+        return this.#calculatedSGST();
     }
 }
 
 class CGST extends Taxes {
-    getCalculatedSGST() {
-        console.log(`Taxable amount from CGST: ${this.taxable}`)
+    #CGSTAmount = 0;
+    #typeATaxPerc = 2.50;
+    #typeBTaxPerc = 6;
+    #typeCTaxPerc = 9;
+
+
+    #calculatedCGST() {
+        if (this.getTypeOfProudct() === 'A') {
+            return this.#CGSTAmount = ((this.getTaxable()) * this.#typeATaxPerc) / 100;
+        } else if (this.getTypeOfProudct() === 'B') {
+            return this.#CGSTAmount = ((this.getTaxable()) * this.#typeBTaxPerc) / 100;
+        } else if (this.getTypeOfProudct() === 'C') {
+            return this.#CGSTAmount = ((this.getTaxable()) * this.#typeCTaxPerc) / 100;
+        } else {
+            return this.#CGSTAmount;
+        }
+    }
+
+    getCalculatedCGST() {
+        return this.#calculatedCGST();
     }
 }
 
@@ -108,7 +182,7 @@ class Bill {
     calculateBillAmount() {
         let customerPurchasedProducts = this.customer.products;
         for (let i = 0; i < customerPurchasedProducts.length; i++) {
-            this.billAmount += customerPurchasedProducts[i]?.price * customerPurchasedProducts[i]?.purchasedQuantity;
+            this.billAmount += customerPurchasedProducts[i]?.mrp * customerPurchasedProducts[i]?.purchasedQuantity;
         }
         return this.billAmount;
     }
@@ -133,12 +207,12 @@ class Bill {
 
     generateBill() {
         console.log(this.orgDetails);
+        console.log("********************************************");
         console.log(`Bill number: ${this.billNumber}`);
-        console.log("********************************************")
         console.log(`Hello ${this.customer.name}, Please check your bill`);
         for (let i = 0; i < this.customer.products.length; i++) {
             console.log("____________________________________________________")
-            console.log(`${i + 1}. ${this.customer.products[i].name} - ${this.customer.products[i].purchasedQuantity} X ${this.customer.products[i].price} `)
+            console.log(`${i + 1}. ${this.customer.products[i].name} - ${this.customer.products[i].purchasedQuantity} X ${this.customer.products[i].mrp} `)
             console.log("____________________________________________________")
         }
         console.log(`Your bill amount:Rs. ${this.calculateBillAmount()}`);
@@ -153,21 +227,39 @@ class Bill {
 
 /** Logic section ends */
 
-/*** Billing section start*/
+/** Configuration section start */
+
+/**Org */
 const store = new Organization();
-store.createOrganization("ABCD HYPERMARKET", "21, TVS Avenue", "North coimbatore", "Coimbatore", 641035, "29GGGGG1314R9Z6");
+store.createOrganization("ABCD HYPERMARKET", "21, TVS Avenue", "North coimbatore", "Coimbatore", 641035, "29GGGGG1314R9Z6", "9898541202", "info@abchypermarket.com");
 const storeDetails = store.printOraganizationDetails();
-const apple = new Product("Apple", 200, 100);
-const orange = new Product("Orange", 150, 100);
-const graphes = new Product("Graphes", 100, 1000);
-const customer = new Customer("Sherin");
-customer.buyProducts(apple, 1);
-customer.buyProducts(graphes, 2);
-customer.buyProducts(orange, 20);
+
+/**Taxes */
+/**
+ * configure sgst
+ * configure cgst
+ * configure igst
+ */
+
+/**Product */
+const product = new Product();
+const sugar = product.createProduct("Sugar", "A", 52);
+const cheese = product.createProduct("Cheese", "B", 50);
+const toothpaste = product.createProduct("Toothpaste", "C", 20);
+
+/** Configuration section ends */
+
+/** Customer section start */
+const customer = new Customer();
+customer.name = "Sherin";
+customer.buyProducts(sugar, 2);
+customer.buyProducts(cheese, 1);
+customer.buyProducts(toothpaste, 1);
+
+/** Customer section ends */
+
+/*** Billing section start*/
 const bill = new Bill(storeDetails, "1000", customer)
-// const sgst = new SGST();
-// sgst.setTaxable(1000)
-// sgst.getCalculatedSGST();
 bill.generateBill();
 
 /*** Billing section ends*/
