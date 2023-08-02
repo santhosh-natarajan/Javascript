@@ -1,13 +1,20 @@
 class Customer {
     name = "";
-    products = [];
+    #cart = [];
 
     constructor(name) {
         this.name = name;
     }
 
-    buyProducts(product, purchasedQuantity) {
-        this.products.push(Object.assign({}, product, { purchasedQuantity }))
+    updateCustomerCart(product) {
+        this.#cart = product;
+    }
+
+    get customerDetails() {
+        return {
+            name: this.name,
+            cart: this.#cart
+        }
     }
 
 }

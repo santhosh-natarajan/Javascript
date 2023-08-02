@@ -13,9 +13,9 @@ class Bill {
 
 
     calculateBillAmount() {
-        let customerPurchasedProducts = this.customer.products;
+        let customerPurchasedProducts = this.customer.cart;
         for (let i = 0; i < customerPurchasedProducts.length; i++) {
-            this.billAmount += customerPurchasedProducts[i]?.mrp * customerPurchasedProducts[i]?.purchasedQuantity;
+            this.billAmount += customerPurchasedProducts[i]?.mrp * customerPurchasedProducts[i]?.purchasedQty;
         }
         return this.billAmount;
     }
@@ -43,9 +43,9 @@ class Bill {
         console.log("********************************************");
         console.log(`Bill number: ${this.billNumber}`);
         console.log(`Hello ${this.customer.name}, Please check your bill`);
-        for (let i = 0; i < this.customer.products.length; i++) {
+        for (let i = 0; i < this.customer.cart.length; i++) {
             console.log("____________________________________________________")
-            console.log(`${i + 1}. ${this.customer.products[i].name} - ${this.customer.products[i].purchasedQuantity} X ${this.customer.products[i].mrp} `)
+            console.log(`${i + 1}. ${this.customer.cart[i].name} - ${this.customer.cart[i].purchasedQty} X ${this.customer.cart[i].mrp} `)
             console.log("____________________________________________________")
         }
         console.log(`Your bill amount:Rs. ${this.calculateBillAmount()}`);
