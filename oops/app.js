@@ -29,16 +29,16 @@ const storeDetails = store.printOraganizationDetails();
 
 /**Product */
 const product = new Product();
-const sugar = product.createProduct("Sugar", "A", 52, 20);
-const cheese = product.createProduct("Cheese", "B", 50, 40);
-const toothpaste = product.createProduct("Toothpaste", "C", 20, 70);
+const sugar = product.createProduct("Sugar", "A", 52, 20, 1000);
+const cheese = product.createProduct("Cheese", "B", 50, 40, 250);
+const toothpaste = product.createProduct("Toothpaste", "C", 20, 70, 100);
 
 /** Configuration section ends */
 
 /** Customer section start */
 const customer = new Customer("Sherin");
 // let value = customer.updateCustomerCart(product.buyProducts(sugar, 1));
-let purchasedProduct = product.buyProducts({ product: sugar, qty: 1 },{ product: cheese, qty: 1 },{ product: toothpaste, qty: 5 });
+let purchasedProduct = product.buyProducts({ product: sugar, qty: 10 }, { product: cheese, qty: 1 }, { product: toothpaste, qty: 5 });
 customer.updateCustomerCart(purchasedProduct);
 // customer.buyProducts(sugar, 2);
 // customer.buyProducts(cheese, 1);

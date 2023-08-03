@@ -3,7 +3,8 @@ class Bill {
     billAmount = 0;
     discoutAmount = 0;
     amountToPay = 0;
-    orgDetails = ""
+    orgDetails = "";
+    #weightOfCart = 0;
 
     constructor(orgDetails, billNumber, customer) {
         this.orgDetails = orgDetails;
@@ -16,6 +17,7 @@ class Bill {
         let customerPurchasedProducts = this.customer.cart;
         for (let i = 0; i < customerPurchasedProducts.length; i++) {
             this.billAmount += customerPurchasedProducts[i]?.mrp * customerPurchasedProducts[i]?.purchasedQty;
+            this.#calculateProductWeight(customerPurchasedProducts[i]?.unitWeight * customerPurchasedProducts[i]?.purchasedQty)
         }
         return this.billAmount;
     }
@@ -38,6 +40,14 @@ class Bill {
         return this.amountToPay = this.billAmount - this.discoutAmount;
     }
 
+    #calculateProductWeight(unitWeight) {
+        return this.#weightOfCart += (unitWeight / 1000); //value in Kilo Gram
+    }
+
+    get weightOfCart() {
+        return this.#weightOfCart;
+    }
+
     generateBill() {
         console.log(this.orgDetails);
         console.log("********************************************");
@@ -51,6 +61,7 @@ class Bill {
         console.log(`Your bill amount:Rs. ${this.calculateBillAmount()}`);
         console.log(`Today discount:Rs. ${this.calculateDiscountAmount()}`);
         console.log(`Amount to pay:Rs. ${this.calculateAmountToPay()}`);
+        console.log(`Total weight: ${this.weightOfCart} Kg`);
         console.log("**********************Happy shopping!!!*************************");
     }
 

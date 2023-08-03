@@ -10,12 +10,14 @@ class Product {
     #discount = 0;
     #mrp = 0;
     #availableQuanity = 0;
+    #unitWeight = 0;
 
-    createProduct(productName, productType, productPrice, availableQuantity) {
+    createProduct(productName, productType, productPrice, availableQuantity, unitWeight) {
         this.#name = productName;
         this.#type = productType;
         this.#price = productPrice;
-        this.#availableQuanity = availableQuantity
+        this.#availableQuanity = availableQuantity;
+        this.#unitWeight = unitWeight;
         return {
             name: this.#name,
             type: this.#type,
@@ -23,7 +25,8 @@ class Product {
             sgst: this.#calculateSGST(),
             cgst: this.#calculateCGST(),
             mrp: this.#calculateMRP(),
-            availableQuantity: this.#availableQuanity
+            availableQuantity: this.#availableQuanity,
+            unitWeight: this.#unitWeight
         }
     }
 
