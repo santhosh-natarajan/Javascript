@@ -19,6 +19,19 @@ class Organization {
         this.#emailId = emailId
     }
 
+    getOrganizationDetails() {
+        return {
+            name: this.#name,
+            addressLine1: this.#addressLine1,
+            addressLine2: this.#addressLine2,
+            city: this.#city,
+            pincode: this.#pincode,
+            gstNumber: this.#gstNumber,
+            phonenumber: this.#phoneNumber,
+            emailId: this.#emailId
+        }
+    }
+
     printOraganizationDetails() {
         return `***************${this.#name}***************\n${this.#addressLine1}\n${this.#addressLine2}\n${this.#city} - ${this.#pincode}\n${this.#phoneNumber}\n${this.#emailId}\nGST: ${this.#gstNumber}`
 
