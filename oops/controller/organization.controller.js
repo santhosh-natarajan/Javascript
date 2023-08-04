@@ -1,12 +1,14 @@
+const mysqlConnectionPool = require("../db");
 const Organization = require("../models/Organization");
+const orgQueries = require('../controller/queries/organization.queries');
 const org = new Organization();
 
 class OrganizationController {
 
-    createOrganization(req, res) {
-        try {
-            const reqBody = req.body;
-            org.createOrganization(
+    insertOrganization(req, res) {
+        const reqBody = req.body;
+        if (reqBody) {
+            let createdOrgValues = org.createOrganization(
                 reqBody.name,
                 reqBody.addressLine1,
                 reqBody.addressLine2,
@@ -15,12 +17,37 @@ class OrganizationController {
                 reqBody.gstNumber,
                 reqBody.phonenumber,
                 reqBody.emailId
-            )
-            res.json({ message: 'success', data: org.getOrganizationDetails() });
+            );
 
-        } catch (error) {
-            res.json({ error: error });
+            this.#executeCreateOrgQuery(orgQueries.createOrganizationQ);
+            let test = this.#executeInsertOrgQuery(orgQueries.insertOrganizatonQ, createdOrgValues.org);
+            console.log("**",test)
+        } else {
+            return;
         }
+    }
+
+    #executeCreateOrgQuery(query) {
+        mysqlConnectionPool.query(query, (err, result) => {
+            if (err) throw err
+        })
+    }
+
+    #executeInsertOrgQuery(query, values) {
+        mysqlConnectionPool.getConnection((err, connection) => {
+            if (!err) {
+                connection.query(query, values, (err, result) => {
+                    connection.release();
+                    if (!err) {
+                        return  { message: 'Success', data: `${result.insertId}` };
+                    } else {
+                        return { message: 'Failed', error: err }
+                    }
+                })
+            } else {
+                return  { message: 'DB Connection Error!', error: err }
+            }
+        })
     }
 }
 

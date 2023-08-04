@@ -17,6 +17,17 @@ class Organization {
         this.#gstNumber = gstNumber;
         this.#phoneNumber = phonenumber;
         this.#emailId = emailId
+
+        return {
+            org: [this.#name,
+            this.#addressLine1,
+            this.#addressLine2,
+            this.#city,
+            this.#pincode,
+            this.#gstNumber,
+            this.#phoneNumber,
+            this.#emailId]
+        }
     }
 
     getOrganizationDetails() {

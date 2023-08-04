@@ -1,7 +1,9 @@
 const express = require('express');
-const organizationController = require('../controller/organization.controller');
 const router = express.Router();
 
-router.post('/organization/create', (req, res) => organizationController.createOrganization(req, res));
+const organizationController = require('../controller/organization.controller');
+
+
+router.post('/organization/create', (req, res) => organizationController.insertOrganization(req, res));
 
 module.exports = router;
