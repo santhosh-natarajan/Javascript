@@ -8,14 +8,14 @@ class Organization {
     #phoneNumber = "";
     #emailId = "";
 
-    createOrganization(name, addressLine1, addressLine2, city, pincode, gstNumber, phonenumber, emailId) {
+    createOrganization(name, addressLine1, addressLine2, city, pincode, gstNumber, phoneNumber, emailId) {
         this.#name = name;
         this.#addressLine1 = addressLine1;
         this.#addressLine2 = addressLine2;
         this.#city = city;
         this.#pincode = pincode;
         this.#gstNumber = gstNumber;
-        this.#phoneNumber = phonenumber;
+        this.#phoneNumber = phoneNumber;
         this.#emailId = emailId
 
         return {
