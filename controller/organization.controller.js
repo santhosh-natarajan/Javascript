@@ -20,33 +20,27 @@ class OrganizationController {
             );
 
             this.#executeCreateOrgQuery(orgQueries.createOrganizationQ);
-            let test = this.#executeInsertOrgQuery(orgQueries.insertOrganizatonQ, createdOrgValues.org);
-            console.log("**",test)
+            mysqlConnectionPool.getConnection((err, connection) => {
+                if (!err) {
+                    connection.query(orgQueries.insertOrganizatonQ, createdOrgValues.org, (err, result) => {
+                        if (!err) {
+                            return res.json({ message: 'Success', data: `${result.insertId}` })
+                        } else {
+                            return res.json({ message: 'Error!', data: err })
+                        }
+                    })
+                } else {
+                    return res.json({ message: 'Error!', data: err })
+                }
+            })
         } else {
-            return;
+            return res.json({ message: 'Error!', data: `Mandatory fields are missing` });
         }
     }
 
     #executeCreateOrgQuery(query) {
         mysqlConnectionPool.query(query, (err, result) => {
             if (err) throw err
-        })
-    }
-
-    #executeInsertOrgQuery(query, values) {
-        mysqlConnectionPool.getConnection((err, connection) => {
-            if (!err) {
-                connection.query(query, values, (err, result) => {
-                    connection.release();
-                    if (!err) {
-                        return  { message: 'Success', data: `${result.insertId}` };
-                    } else {
-                        return { message: 'Failed', error: err }
-                    }
-                })
-            } else {
-                return  { message: 'DB Connection Error!', error: err }
-            }
         })
     }
 }

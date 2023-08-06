@@ -15,9 +15,7 @@ class OrganizationQueries {
     )
     `;
 
-    #insertOrganizatonQ = `INSERT INTO organization 
-        (name, addressLine1, addressLine2, city, pincode, gstNumber, phonenumber, emailId) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    #insertOrganizatonQ = `INSERT INTO organization (name, addressLine1, addressLine2, city, pincode, gstNumber, phonenumber, emailId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     get createOrganizationQ() {
         return this.#createOrganizationQ;
