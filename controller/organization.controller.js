@@ -30,7 +30,7 @@ class OrganizationController {
                         }
                     })
                 } else {
-                    return res.json({ message: 'Error!', data: err })
+                    return res.json({ message: 'Error!!', data: err })
                 }
             })
         } else {
