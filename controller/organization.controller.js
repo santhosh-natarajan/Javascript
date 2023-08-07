@@ -7,7 +7,8 @@ class OrganizationController {
 
     insertOrganization(req, res) {
         const reqBody = req.body;
-        if (reqBody) {
+        if (reqBody.name !== "" && reqBody.addressLine1 !== "" && reqBody.addressLine2 !== "" && reqBody.city !== "" && reqBody.pincode !== ""
+            && reqBody.gstNumber !== "" && reqBody.phonenumber !== "" && reqBody.emailId !== "") {
             let createdOrgValues = org.createOrganization(
                 reqBody.name,
                 reqBody.addressLine1,
