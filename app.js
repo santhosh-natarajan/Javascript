@@ -11,6 +11,7 @@ const Bill = require('./models/Bill');
 const Customer = require('./models/Customer');
 const Organization = require('./models/Organization');
 const Product = require('./models/Product');
+const JWTFeatures = require('./helpers/jwt');
 /** Imports section ends */
 
 /** Configuration section start */
@@ -47,8 +48,16 @@ customer.updateCustomerCart(purchasedProduct);
 /** Customer section ends */
 
 /*** Billing section start*/
-const bill = new Bill(storeDetails, "1000", customer.customerDetails)
-bill.generateBill();
-
+// const bill = new Bill(storeDetails, "1000", customer.customerDetails)
+// bill.generateBill();
 /*** Billing section ends*/
+const JWT = new JWTFeatures();
+
+async function getJWTToken() {
+    const jwtData = await JWT.generateJWTTokens();
+    console.log("Test", {jwtData});
+}
+
+getJWTToken();
+
 
