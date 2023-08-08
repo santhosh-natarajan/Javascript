@@ -39,6 +39,22 @@ class OrganizationController {
         }
     }
 
+    getOrganizationById(req, res) {
+        mysqlConnectionPool.getConnection((err, connect) => {
+            if (!err) {
+                connect.query(orgQueries.organizationByIdQ, [req.params.id], (err, results) => {
+                    if (!err) {
+                        return res.json({ message: 'Success', data: results[0] })
+                    } else {
+                        return res.json({ message: 'Failed', data: err });
+                    }
+                })
+            } else {
+                return res.json({ message: 'Failed', data: err });
+            }
+        })
+    }
+
     #executeCreateOrgQuery(query) {
         mysqlConnectionPool.query(query, (err, result) => {
             if (err) throw err

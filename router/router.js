@@ -6,7 +6,10 @@ const productController = require('../controller/product.controller');
 const customerController = require('../controller/customer.controller');
 
 
+
 router.post('/organization/create', (req, res) => organizationController.insertOrganization(req, res));
+router.post('/organization/:id', (req, res) => organizationController.getOrganizationById(req, res));
+
 router.post('/product/create', (req, res) => productController.insertProduct(req, res));
 router.post('/customer/create', (req, res) => customerController.insertCustomerRecord(req, res));
 

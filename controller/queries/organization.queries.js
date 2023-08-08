@@ -17,12 +17,18 @@ class OrganizationQueries {
 
     #insertOrganizatonQ = `INSERT INTO organization (name, addressLine1, addressLine2, city, pincode, gstNumber, phonenumber, emailId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
+    #getOrganizationByIdQ = `SELECT * FROM organization WHERE id = ?`;
+
     get createOrganizationQ() {
         return this.#createOrganizationQ;
     }
 
     get insertOrganizatonQ() {
         return this.#insertOrganizatonQ;
+    }
+
+    get organizationByIdQ() {
+        return this.#getOrganizationByIdQ;
     }
 }
 
