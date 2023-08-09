@@ -11,8 +11,7 @@ class JWTFeatures {
         issuer: "billing.com"
     }
 
-    generateJWTTokens() {
-        console.log("**", process.env.ACCESS_TOKEN_SECRET_KEY)
+    #generateJWTTokens() {
         return new Promise((resolve, reject) => {
             JWT.sign(this.#payload, this.#secretKey, this.#jwtOptions, (err, Token) => {
                 if (!err) {
@@ -22,6 +21,12 @@ class JWTFeatures {
                 }
             })
         })
+    }
+
+
+    async getJWTToken(req, res) {
+        const jwtData = await this.#generateJWTTokens();
+        return res.json({ jwtData });
     }
 }
 

@@ -51,7 +51,6 @@ customer.updateCustomerCart(purchasedProduct);
 // const bill = new Bill(storeDetails, "1000", customer.customerDetails)
 // bill.generateBill();
 /*** Billing section ends*/
-const JWT = new JWTFeatures();
 
 async function getJWTToken() {
     const jwtData = await JWT.generateJWTTokens();
