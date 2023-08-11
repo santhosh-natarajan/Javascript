@@ -6,14 +6,14 @@ const productController = require('../controller/product.controller');
 const customerController = require('../controller/customer.controller');
 const JWTFeatures = require('../helpers/jwt');
 
-const JWT = new JWTFeatures();
+const JWTObj = new JWTFeatures();
 
 
-router.get('/register', (req, res) => JWT.getJWTToken(req, res))
-router.post('/organization/create', (req, res) => organizationController.insertOrganization(req, res));
-router.post('/organization/:id', (req, res) => organizationController.getOrganizationById(req, res));
+router.get('/register', (req, res) => JWTObj.getJWTToken(req, res))
+router.post('/organization/create', JWTObj.verifiyToken, (req, res) => organizationController.insertOrganization(req, res));
+router.post('/organization/:id', JWTObj.verifiyToken, (req, res) => organizationController.getOrganizationById(req, res));
 
-router.post('/product/create', (req, res) => productController.insertProduct(req, res));
-router.post('/customer/create', (req, res) => customerController.insertCustomerRecord(req, res));
+router.post('/product/create', JWTObj.verifiyToken, (req, res) => productController.insertProduct(req, res));
+router.post('/customer/create', JWTObj.verifiyToken, (req, res) => customerController.insertCustomerRecord(req, res));
 
 module.exports = router;
