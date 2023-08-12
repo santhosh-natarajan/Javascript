@@ -9,7 +9,8 @@ const JWTFeatures = require('../helpers/jwt');
 const JWTObj = new JWTFeatures();
 
 
-router.get('/register', (req, res) => JWTObj.getJWTToken(req, res))
+router.get('/register', (req, res) => JWTObj.getJWTToken(req, res));
+router.get('/getAccessToken', (req, res) => JWTObj.getAccessTokenUsingRefershToken(req, res));
 router.post('/organization/create', JWTObj.verifiyToken, (req, res) => organizationController.insertOrganization(req, res));
 router.post('/organization/:id', JWTObj.verifiyToken, (req, res) => organizationController.getOrganizationById(req, res));
 
