@@ -12,6 +12,9 @@ const Customer = require('./models/Customer');
 const Organization = require('./models/Organization');
 const Product = require('./models/Product');
 const JWTFeatures = require('./helpers/jwt');
+const Taxes = require('./models/Taxes');
+const SGST = require('./models/SGST');
+const TaxController = require('./controller/tax.controller');
 /** Imports section ends */
 
 /** Configuration section start */
@@ -27,6 +30,12 @@ const storeDetails = store.printOraganizationDetails();
  * configure cgst
  * configure igst
  */
+
+// Taxes.updateTypeAperc(10);
+// const sgst = new SGST();
+// console.log("test",sgst.typeATaxPerc);
+const taxController = new TaxController();
+taxController.updateTaxTypeA(40)
 
 /**Product */
 const product = new Product();
@@ -47,16 +56,10 @@ customer.updateCustomerCart(purchasedProduct);
 
 /** Customer section ends */
 
+
+
 /*** Billing section start*/
-// const bill = new Bill(storeDetails, "1000", customer.customerDetails)
-// bill.generateBill();
+const bill = new Bill(storeDetails, "1000", customer.customerDetails)
+bill.generateBill();
 /*** Billing section ends*/
-
-async function getJWTToken() {
-    const jwtData = await JWT.generateJWTTokens();
-    console.log("Test", {jwtData});
-}
-
-getJWTToken();
-
 
