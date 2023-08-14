@@ -2,9 +2,18 @@ const Taxes = require("../models/Taxes");
 
 class TaxController {
 
-    updateTaxTypeA(newTaxRate) {
-        Taxes.updateTypeAperc(newTaxRate);
+    updateTaxTypeA(req, res) {
+        console.log("***", req.body)
+        const requestBody = req.body;
+        if (requestBody.updatedSGSTTypeARate > 0) {
+            Taxes.updateTypeAperc(requestBody.updatedSGSTTypeARate);
+            res.json({ message: 'Tax value updated' });
+        } else {
+            return res.json({ message: 'invalid value' })
+        }
+
     }
 }
 
-module.exports = TaxController;
+const taxController = new TaxController();
+module.exports = taxController;

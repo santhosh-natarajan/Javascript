@@ -34,8 +34,8 @@ const storeDetails = store.printOraganizationDetails();
 // Taxes.updateTypeAperc(10);
 // const sgst = new SGST();
 // console.log("test",sgst.typeATaxPerc);
-const taxController = new TaxController();
-taxController.updateTaxTypeA(40)
+// const taxController = new TaxController();
+// taxController.updateTaxTypeA(40)
 
 /**Product */
 const product = new Product();
