@@ -13,6 +13,8 @@ class ProductQueries {
     )`
 
     #insertProduct = `INSERT INTO product (name, type, price, sgst, cgst, mrp, availableQuantity, unitWeight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    
+    #getAllProducts = `SELECT * FROM product`;
 
     get createProuctTable() {
         return this.#createProductTable;
@@ -20,6 +22,10 @@ class ProductQueries {
 
     get insertProduct() {
         return this.#insertProduct;
+    }
+
+    get getProductList() { 
+        return this.#getAllProducts;
     }
 }
 

@@ -46,6 +46,23 @@ class ProductController {
             }
         });
     }
+
+    getAllProducts(req, res) {
+        mysqlConnectionPool.getConnection((err, connect) => {
+            if (!err) {
+                connect.query(productQueries.getProductList, (err, values) => {
+                    connect.release();
+                    if (!err) {
+                        res.json({ data: values });
+                    } else {
+                        return res.json({ message: 'Not able to fetch the list', data: [] })
+                    }
+                })
+            } else {
+                return res.json({ message: 'Not able to fetch the list', data: [] })
+            }
+        })
+    }
 }
 
 const productController = new ProductController();

@@ -17,6 +17,7 @@ router.post('/organization/create', JWTObj.verifiyToken, (req, res) => organizat
 router.post('/organization/:id', JWTObj.verifiyToken, (req, res) => organizationController.getOrganizationById(req, res));
 
 router.post('/product/create', JWTObj.verifiyToken, (req, res) => productController.insertProduct(req, res));
+router.get('/product/getAll', (req, res) => productController.getAllProducts(req, res));
 router.post('/customer/create', JWTObj.verifiyToken, (req, res) => customerController.insertCustomerRecord(req, res));
 
 router.post('/update/sgst/rate/typea', JWTObj.verifiyToken, (req, res) => taxController.updateTaxTypeA(req, res))
